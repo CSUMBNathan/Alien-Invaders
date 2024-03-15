@@ -8,6 +8,7 @@ public class Enemy : MonoBehaviour
     public int enemyType = 1;
     private int points = 0;
 
+
     private static Dictionary<int, int> enemyPoints = new Dictionary<int, int>()
     {
         { 1, 10 }, // Type 1 enemy is worth 10 points
@@ -18,23 +19,27 @@ public class Enemy : MonoBehaviour
 
     public delegate void EnemyDeathDelegate(int points);
     public static event EnemyDeathDelegate enemyDeath;
+    
+    private Animator animator;
+
 
     void Start()
     {
-        if (enemyPoints.ContainsKey(enemyType))
+        animator = GetComponent<Animator>(); 
+        animator.SetInteger("EnemyType", enemyType);
+            
+        
+        if (enemyPoints.TryGetValue(enemyType, out var point))
         {
-            points = enemyPoints[enemyType];
+            points = point;
         }
 
         
     }
 
-    private void Update()
-    {
-        
-      }
+    
 
-    void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Bullet"))
         {
@@ -42,5 +47,9 @@ public class Enemy : MonoBehaviour
             Destroy(gameObject);
             Destroy(collision.gameObject);
         }
+        
+        
     }
+
+   
 }

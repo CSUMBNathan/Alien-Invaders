@@ -21,10 +21,5 @@ public class Bullet : MonoBehaviour
     {
       myRigidbody2D.velocity = Vector2.up * speed; 
     }
-
-    private void OnCollisionEnter2D(Collision2D other)
-    {
-      Destroy(other.gameObject);
-      Destroy(gameObject);
-    }
+    
 }
